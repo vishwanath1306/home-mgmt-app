@@ -24,15 +24,21 @@ import {
   Users,
   AlertCircle,
 } from "lucide-react"
+import { useRouter } from "next/navigation"
 
 type Screen = "dashboard" | "tasks" | "shopping" | "finance" | "travel" | "settings"
 
 export default function HouseholdApp() {
   const [currentScreen, setCurrentScreen] = useState<Screen>("dashboard")
   const [completedTasks, setCompletedTasks] = useState<string[]>([])
+  const router = useRouter()
 
   const toggleTaskComplete = (taskId: string) => {
     setCompletedTasks((prev) => (prev.includes(taskId) ? prev.filter((id) => id !== taskId) : [...prev, taskId]))
+  }
+
+  const handleAddTask = () => {
+    router.push('/task')
   }
 
   const renderDashboard = () => (
@@ -98,7 +104,11 @@ export default function HouseholdApp() {
         </CardHeader>
         <CardContent>
           <div className="grid grid-cols-2 gap-3">
-            <Button variant="outline" className="h-12 justify-start gap-3">
+            <Button 
+              variant="outline" 
+              className="h-12 justify-start gap-3"
+              onClick={handleAddTask}
+            >
               <Plus className="h-4 w-4" />
               Add Task
             </Button>

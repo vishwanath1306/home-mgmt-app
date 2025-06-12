@@ -1,30 +1,67 @@
-# Household management app
+# Household Management App
 
-*Automatically synced with your [v0.dev](https://v0.dev) deployments*
+A modern web application for managing household tasks and activities, built with Next.js and Tailwind CSS.
 
-[![Deployed on Vercel](https://img.shields.io/badge/Deployed%20on-Vercel-black?style=for-the-badge&logo=vercel)](https://vercel.com/vishwanath1306s-projects/v0-household-management-app)
-[![Built with v0](https://img.shields.io/badge/Built%20with-v0.dev-black?style=for-the-badge)](https://v0.dev/chat/projects/wEYttXiOjub)
+## Prerequisites
 
-## Overview
+Before you begin, make sure you have the following installed on your computer:
+- [Node.js](https://nodejs.org/) (version 18 or higher)
+- [PNPM](https://pnpm.io/) (a fast, disk space efficient package manager)
 
-This repository will stay in sync with your deployed chats on [v0.dev](https://v0.dev).
-Any changes you make to your deployed app will be automatically pushed to this repository from [v0.dev](https://v0.dev).
+## Getting Started
+
+Follow these steps to run the application on your local machine:
+
+1. **Clone the repository**
+   ```bash
+   git clone <your-repository-url>
+   cd home-mgmt-app
+   ```
+
+2. **Install dependencies**
+   ```bash
+   pnpm install
+   ```
+
+3. **Start the development server**
+   ```bash
+   pnpm dev
+   ```
+
+4. **Open your browser**
+   Visit [http://localhost:3000](http://localhost:3000) to see your application running locally.
+
+## Available Scripts
+
+- `pnpm dev` - Starts the development server
+- `pnpm build` - Creates a production build
+- `pnpm start` - Runs the production build locally
+- `pnpm lint` - Runs the linter to check for code issues
+
+## Project Structure
+
+- `/app` - Contains the main application pages and routes
+- `/components` - Reusable UI components
+- `/public` - Static assets like images
+- `/styles` - Global styles and Tailwind configuration
+- `/lib` - Utility functions and shared code
+
+## Technologies Used
+
+- [Next.js](https://nextjs.org/) - React framework
+- [Tailwind CSS](https://tailwindcss.com/) - Utility-first CSS framework
+- [Radix UI](https://www.radix-ui.com/) - Unstyled, accessible components
+- [TypeScript](https://www.typescriptlang.org/) - Type-safe JavaScript
+
+## Need Help?
+
+If you run into any issues:
+1. Make sure all prerequisites are installed correctly
+2. Check that you're using the correct Node.js version
+3. Try deleting the `node_modules` folder and running `pnpm install` again
+4. Check the console for any error messages
 
 ## Deployment
 
-Your project is live at:
-
-**[https://vercel.com/vishwanath1306s-projects/v0-household-management-app](https://vercel.com/vishwanath1306s-projects/v0-household-management-app)**
-
-## Build your app
-
-Continue building your app on:
-
-**[https://v0.dev/chat/projects/wEYttXiOjub](https://v0.dev/chat/projects/wEYttXiOjub)**
-
-## How It Works
-
-1. Create and modify your project using [v0.dev](https://v0.dev)
-2. Deploy your chats from the v0 interface
-3. Changes are automatically pushed to this repository
-4. Vercel deploys the latest version from this repository
+This project is deployed on Vercel. You can access the live version at:
+[https://vercel.com/vishwanath1306s-projects/v0-household-management-app](https://vercel.com/vishwanath1306s-projects/v0-household-management-app)
