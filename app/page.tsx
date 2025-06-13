@@ -37,8 +37,12 @@ export default function HouseholdApp() {
     setCompletedTasks((prev) => (prev.includes(taskId) ? prev.filter((id) => id !== taskId) : [...prev, taskId]))
   }
 
-  const handleAddTask = () => {
-    router.push('/task')
+  const handleNavigation = (screen: Screen) => {
+    if (screen === "tasks") {
+      router.push("/task")
+    } else {
+      setCurrentScreen(screen)
+    }
   }
 
   const renderDashboard = () => (
@@ -107,7 +111,7 @@ export default function HouseholdApp() {
             <Button 
               variant="outline" 
               className="h-12 justify-start gap-3"
-              onClick={handleAddTask}
+              onClick={() => handleNavigation("tasks")}
             >
               <Plus className="h-4 w-4" />
               Add Task
@@ -840,7 +844,7 @@ export default function HouseholdApp() {
               className={`flex flex-col items-center gap-1 h-auto py-2 px-3 ${
                 currentScreen === tab.id ? "text-emerald-600 bg-emerald-50" : "text-slate-600"
               }`}
-              onClick={() => setCurrentScreen(tab.id as Screen)}
+              onClick={() => handleNavigation(tab.id as Screen)}
             >
               <tab.icon className="h-5 w-5" />
               <span className="text-xs">{tab.label}</span>
