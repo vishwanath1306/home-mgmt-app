@@ -25,17 +25,17 @@ import {
   AlertCircle,
 } from "lucide-react"
 import { useRouter } from "next/navigation"
+import { useTasks } from "./hooks/useTasks"
+import { useShopping } from "./hooks/useShopping"
+import { ShoppingModal } from "@/components/ShoppingModal"
 
 type Screen = "dashboard" | "tasks" | "shopping" | "finance" | "travel" | "settings"
 
 export default function HouseholdApp() {
   const [currentScreen, setCurrentScreen] = useState<Screen>("dashboard")
-  const [completedTasks, setCompletedTasks] = useState<string[]>([])
+  const { tasks, toggleTaskComplete } = useTasks()
+  const [shoppingModalOpen, setShoppingModalOpen] = useState(false)
   const router = useRouter()
-
-  const toggleTaskComplete = (taskId: string) => {
-    setCompletedTasks((prev) => (prev.includes(taskId) ? prev.filter((id) => id !== taskId) : [...prev, taskId]))
-  }
 
   const handleNavigation = (screen: Screen) => {
     if (screen === "tasks") {
@@ -116,7 +116,11 @@ export default function HouseholdApp() {
               <Plus className="h-4 w-4" />
               Add Task
             </Button>
-            <Button variant="outline" className="h-12 justify-start gap-3">
+            <Button 
+              variant="outline" 
+              className="h-12 justify-start gap-3"
+              onClick={() => setShoppingModalOpen(true)}
+            >
               <ShoppingCart className="h-4 w-4" />
               Shopping List
             </Button>
@@ -136,26 +140,21 @@ export default function HouseholdApp() {
       <Card>
         <CardHeader className="flex flex-row items-center justify-between">
           <CardTitle className="text-lg">Today's Tasks</CardTitle>
-          <Badge variant="secondary">4 remaining</Badge>
+          <Badge variant="secondary">{tasks.filter(t => !t.completed).length} remaining</Badge>
         </CardHeader>
         <CardContent className="space-y-3">
-          {[
-            { id: "1", task: "Take out trash", assignee: "Alex", priority: "high", time: "9:00 AM" },
-            { id: "2", task: "Grocery shopping", assignee: "Jordan", priority: "medium", time: "2:00 PM" },
-            { id: "3", task: "Clean bathroom", assignee: "Alex", priority: "medium", time: "4:00 PM" },
-            { id: "4", task: "Prep dinner", assignee: "Jordan", priority: "low", time: "6:00 PM" },
-          ].map((item) => (
+          {tasks.slice(0, 4).map((item) => (
             <div key={item.id} className="flex items-center gap-3 p-3 bg-slate-50 rounded-lg">
               <Button variant="ghost" size="sm" className="p-0 h-6 w-6" onClick={() => toggleTaskComplete(item.id)}>
                 <CheckCircle2
                   className={`h-5 w-5 ${
-                    completedTasks.includes(item.id) ? "text-emerald-500 fill-emerald-500" : "text-slate-400"
+                    item.completed ? "text-emerald-500 fill-emerald-500" : "text-slate-400"
                   }`}
                 />
               </Button>
               <div className="flex-1">
                 <p
-                  className={`font-medium ${completedTasks.includes(item.id) ? "line-through text-slate-500" : "text-slate-800"}`}
+                  className={`font-medium ${item.completed ? "line-through text-slate-500" : "text-slate-800"}`}
                 >
                   {item.task}
                 </p>
@@ -860,6 +859,8 @@ export default function HouseholdApp() {
       >
         <Plus className="h-6 w-6" />
       </Button>
+
+      <ShoppingModal open={shoppingModalOpen} onOpenChange={setShoppingModalOpen} />
     </div>
   )
 }
