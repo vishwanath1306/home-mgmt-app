@@ -5,7 +5,7 @@ let tasks = [
   {
     id: "1",
     task: "Take out trash",
-    assignee: "vishwa",
+    assignee: "Vishwa",
     priority: "high",
     time: "9:00 AM",
     completed: false,
@@ -15,7 +15,7 @@ let tasks = [
   {
     id: "2",
     task: "Grocery shopping",
-    assignee: "shruthi",
+    assignee: "Shruthi",
     priority: "medium",
     time: "2:00 PM",
     completed: false,
@@ -25,7 +25,7 @@ let tasks = [
   {
     id: "3",
     task: "Clean bathroom",
-    assignee: "vishwa",
+    assignee: "Vishwa",
     priority: "medium",
     time: "4:00 PM",
     completed: false,
@@ -35,7 +35,7 @@ let tasks = [
   {
     id: "4",
     task: "Prep dinner",
-    assignee: "shruthi",
+    assignee: "Shruthi",
     priority: "low",
     time: "6:00 PM",
     completed: false,

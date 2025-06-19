@@ -6,7 +6,7 @@ export type ShoppingItem = {
   category: string
   price: number
   quantity: number
-  addedBy: string // 'vishwa' or 'shruthi'
+  addedBy: string // 'Vishwa' or 'Shruthi'
   completed: boolean
   date: string
 }

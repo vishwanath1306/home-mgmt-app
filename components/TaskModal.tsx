@@ -103,8 +103,8 @@ export function TaskModal({ open, onOpenChange, defaultDueDate }: TaskModalProps
                 <SelectValue placeholder="Select assignee" />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="vishwa">vishwa</SelectItem>
-                <SelectItem value="shruthi">shruthi</SelectItem>
+                <SelectItem value="Vishwa">Vishwa</SelectItem>
+                <SelectItem value="Shruthi">Shruthi</SelectItem>
               </SelectContent>
             </Select>
           </div>

@@ -3,7 +3,7 @@ import { useState, useEffect } from "react"
 export type Task = {
   id: string
   task: string
-  assignee: string // 'vishwa' or 'shruthi'
+  assignee: string // 'Vishwa' or 'Shruthi'
   priority: "high" | "medium" | "low"
   time: string
   completed: boolean

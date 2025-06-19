@@ -31,7 +31,7 @@ export function ShoppingModal({ open, onOpenChange }: ShoppingModalProps) {
     category: "",
     price: 0,
     quantity: 1,
-    addedBy: "vishwa",
+    addedBy: "Vishwa",
     date: new Date().toISOString(),
   })
 
@@ -45,7 +45,7 @@ export function ShoppingModal({ open, onOpenChange }: ShoppingModalProps) {
         category: "",
         price: 0,
         quantity: 1,
-        addedBy: "vishwa",
+        addedBy: "Vishwa",
         date: new Date().toISOString(),
       })
     } catch (error) {
@@ -120,8 +120,8 @@ export function ShoppingModal({ open, onOpenChange }: ShoppingModalProps) {
                 <SelectValue placeholder="Select person" />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="vishwa">vishwa</SelectItem>
-                <SelectItem value="shruthi">shruthi</SelectItem>
+                <SelectItem value="Vishwa">Vishwa</SelectItem>
+                <SelectItem value="Shruthi">Shruthi</SelectItem>
               </SelectContent>
             </Select>
           </div>

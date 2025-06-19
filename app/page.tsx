@@ -28,6 +28,7 @@ import { useRouter } from "next/navigation"
 import { useTasks } from "./hooks/useTasks"
 import { useShopping } from "./hooks/useShopping"
 import { ShoppingModal } from "@/components/ShoppingModal"
+import { FinanceModal } from "@/components/FinanceModal"
 
 type Screen = "dashboard" | "tasks" | "shopping" | "finance" | "travel" | "settings"
 
@@ -35,11 +36,16 @@ export default function HouseholdApp() {
   const [currentScreen, setCurrentScreen] = useState<Screen>("dashboard")
   const { tasks, toggleTaskComplete } = useTasks()
   const [shoppingModalOpen, setShoppingModalOpen] = useState(false)
+  const [financeModalOpen, setFinanceModalOpen] = useState(false)
   const router = useRouter()
 
   const handleNavigation = (screen: Screen) => {
     if (screen === "tasks") {
       router.push("/task")
+    } else if (screen === "shopping") {
+      router.push("/shopping")
+    } else if (screen === "finance") {
+      router.push("/finance")
     } else {
       setCurrentScreen(screen)
     }
@@ -124,7 +130,11 @@ export default function HouseholdApp() {
               <ShoppingCart className="h-4 w-4" />
               Shopping List
             </Button>
-            <Button variant="outline" className="h-12 justify-start gap-3">
+            <Button 
+              variant="outline" 
+              className="h-12 justify-start gap-3"
+              onClick={() => setFinanceModalOpen(true)}
+            >
               <DollarSign className="h-4 w-4" />
               Log Expense
             </Button>
@@ -861,6 +871,7 @@ export default function HouseholdApp() {
       </Button>
 
       <ShoppingModal open={shoppingModalOpen} onOpenChange={setShoppingModalOpen} />
+      <FinanceModal open={financeModalOpen} onOpenChange={setFinanceModalOpen} />
     </div>
   )
 }
