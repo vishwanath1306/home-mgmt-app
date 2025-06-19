@@ -38,7 +38,7 @@ export default function HouseholdApp() {
   const [financeModalOpen, setFinanceModalOpen] = useState(false)
   
   // Hooks for data management
-  const { tasks } = useTasks()
+  const { tasks, toggleTaskComplete } = useTasks()
   const router = useRouter()
 
   /**
@@ -243,12 +243,19 @@ export default function HouseholdApp() {
               <CardContent>
                 <div className="space-y-3">
                   {tasks.slice(0, 4).map((task) => (
-                    <div key={task.id} className="flex items-center gap-3 p-3 bg-slate-50 rounded-lg">
-                      <CheckCircle2
-                        className={`h-5 w-5 ${
-                          task.completed ? "text-emerald-500" : "text-slate-400"
-                        }`}
-                      />
+                    <div key={task.id} className="flex items-center gap-3 p-3 bg-slate-50 rounded-lg group hover:shadow-sm transition-all">
+                      <Button
+                        variant="ghost"
+                        size="sm"
+                        className="p-0 h-6 w-6 flex-shrink-0"
+                        onClick={() => toggleTaskComplete(task.id)}
+                      >
+                        <CheckCircle2
+                          className={`h-5 w-5 ${
+                            task.completed ? "text-emerald-500 fill-emerald-500" : "text-slate-400"
+                          }`}
+                        />
+                      </Button>
                       <div className="flex-1">
                         <p className={`font-medium ${task.completed ? "line-through text-slate-500" : "text-slate-800"}`}>
                           {task.task}
