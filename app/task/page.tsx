@@ -285,81 +285,85 @@ export default function TaskPage() {
   ]
 
   return (
-    <div className="max-w-6xl mx-auto p-4 min-h-screen bg-slate-50 flex flex-col">
-      <h1 className="text-2xl font-bold text-slate-800 mb-6">Tasks Board</h1>
-      <div className="flex-1">
-        <DndContext
-          sensors={sensors}
-          collisionDetection={closestCorners}
-          onDragStart={handleDragStart}
-          onDragEnd={handleDragEnd}
-        >
-          <SortableContext items={columnIds} strategy={verticalListSortingStrategy}>
-            <div className="flex gap-4 overflow-x-auto">
-              {days.map((date) => {
-                const key = date.toISOString()
-                const taskIds = columnTasks[key] || []
-                const dayTasks = taskIds.map(id => tasks.find(t => t.id === id)).filter(Boolean)
-                return (
-                  <div key={key} className="flex-1 min-w-[260px]">
-                    <Card className="bg-white border-slate-200 h-full">
-                      <CardHeader className="flex flex-col gap-2 pb-2">
-                        <div className="flex items-center justify-between">
-                          <CardTitle className="text-lg">{format(date, "EEEE")}</CardTitle>
-                          <span className="text-xs text-slate-500">{format(date, "MMM d")}</span>
-                        </div>
-                        <Button
-                          variant="outline"
-                          size="sm"
-                          className="w-full justify-center"
-                          onClick={() => handleAddTask(date)}
-                        >
-                          <Plus className="h-4 w-4 mr-1" /> Add task
-                        </Button>
-                      </CardHeader>
-                      <CardContent className="space-y-3 pt-2">
-                        <SortableContext id={key} items={[...taskIds, key]} strategy={verticalListSortingStrategy}>
-                          {dayTasks.length === 0 && (
-                            <DroppableArea columnId={key} />
-                          )}
-                          {dayTasks.map((task: any) => (
-                            <DraggableTask
-                              key={task.id}
-                              task={task}
-                              toggleTaskComplete={toggleTaskComplete}
-                            />
-                          ))}
-                        </SortableContext>
-                      </CardContent>
-                    </Card>
-                  </div>
-                )
-              })}
-            </div>
-          </SortableContext>
-          <DragOverlay>
-            {activeTask ? <TaskOverlay task={activeTask} /> : null}
-          </DragOverlay>
-        </DndContext>
-        <TaskModal open={modalOpen} onOpenChange={setModalOpen} defaultDueDate={modalDate} />
+    <div className="w-full mx-auto bg-slate-50 min-h-screen flex flex-col">
+      <div className="max-w-7xl mx-auto w-full p-4 pb-20 flex-1">
+        <h1 className="text-2xl md:text-3xl font-bold text-slate-800 mb-6">Tasks Board</h1>
+        <div className="flex-1">
+          <DndContext
+            sensors={sensors}
+            collisionDetection={closestCorners}
+            onDragStart={handleDragStart}
+            onDragEnd={handleDragEnd}
+          >
+            <SortableContext items={columnIds} strategy={verticalListSortingStrategy}>
+              <div className="flex gap-4 overflow-x-auto pb-4">
+                {days.map((date) => {
+                  const key = date.toISOString()
+                  const taskIds = columnTasks[key] || []
+                  const dayTasks = taskIds.map(id => tasks.find(t => t.id === id)).filter(Boolean)
+                  return (
+                    <div key={key} className="flex-1 min-w-[280px] lg:min-w-[320px]">
+                      <Card className="bg-white border-slate-200 h-full shadow-sm">
+                        <CardHeader className="flex flex-col gap-2 pb-3">
+                          <div className="flex items-center justify-between">
+                            <CardTitle className="text-lg font-semibold">{format(date, "EEEE")}</CardTitle>
+                            <span className="text-sm text-slate-500 font-medium">{format(date, "MMM d")}</span>
+                          </div>
+                          <Button
+                            variant="outline"
+                            size="sm"
+                            className="w-full justify-center hover:bg-emerald-50 hover:border-emerald-200"
+                            onClick={() => handleAddTask(date)}
+                          >
+                            <Plus className="h-4 w-4 mr-1" /> Add task
+                          </Button>
+                        </CardHeader>
+                        <CardContent className="space-y-3 pt-2">
+                          <SortableContext id={key} items={[...taskIds, key]} strategy={verticalListSortingStrategy}>
+                            {dayTasks.length === 0 && (
+                              <DroppableArea columnId={key} />
+                            )}
+                            {dayTasks.map((task: any) => (
+                              <DraggableTask
+                                key={task.id}
+                                task={task}
+                                toggleTaskComplete={toggleTaskComplete}
+                              />
+                            ))}
+                          </SortableContext>
+                        </CardContent>
+                      </Card>
+                    </div>
+                  )
+                })}
+              </div>
+            </SortableContext>
+            <DragOverlay>
+              {activeTask ? <TaskOverlay task={activeTask} /> : null}
+            </DragOverlay>
+          </DndContext>
+          <TaskModal open={modalOpen} onOpenChange={setModalOpen} defaultDueDate={modalDate} />
+        </div>
       </div>
       {/* Bottom Navigation Bar */}
-      <div className="fixed bottom-0 left-1/2 transform -translate-x-1/2 w-full max-w-6xl bg-white border-t border-slate-200 z-50">
-        <div className="flex items-center justify-around py-2">
-          {navTabs.map((tab) => (
-            <Button
-              key={tab.id}
-              variant="ghost"
-              size="sm"
-              className={`flex flex-col items-center gap-1 h-auto py-2 px-3 ${
-                tab.id === "tasks" ? "text-emerald-600 bg-emerald-50" : "text-slate-600"
-              }`}
-              onClick={() => router.push(tab.path)}
-            >
-              <tab.icon className="h-5 w-5" />
-              <span className="text-xs">{tab.label}</span>
-            </Button>
-          ))}
+      <div className="fixed bottom-0 left-0 right-0 bg-white border-t border-slate-200 z-50">
+        <div className="max-w-7xl mx-auto px-4">
+          <div className="flex items-center justify-around py-2">
+            {navTabs.map((tab) => (
+              <Button
+                key={tab.id}
+                variant="ghost"
+                size="sm"
+                className={`flex flex-col items-center gap-1 h-auto py-2 px-3 ${
+                  tab.id === "tasks" ? "text-emerald-600 bg-emerald-50" : "text-slate-600"
+                }`}
+                onClick={() => router.push(tab.path)}
+              >
+                <tab.icon className="h-5 w-5" />
+                <span className="text-xs">{tab.label}</span>
+              </Button>
+            ))}
+          </div>
         </div>
       </div>
     </div>

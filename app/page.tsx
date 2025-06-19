@@ -56,7 +56,7 @@ export default function HouseholdApp() {
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-2xl font-bold text-slate-800">Good morning! 👋</h1>
+          <h1 className="text-2xl md:text-3xl font-bold text-slate-800">Good morning! 👋</h1>
           <p className="text-slate-600">Let's tackle today together</p>
         </div>
         <div className="flex items-center gap-3">
@@ -66,18 +66,18 @@ export default function HouseholdApp() {
           <div className="flex -space-x-2">
             <Avatar className="h-8 w-8 border-2 border-white">
               <AvatarImage src="/placeholder.svg?height=32&width=32" />
-              <AvatarFallback className="bg-emerald-100 text-emerald-700">A</AvatarFallback>
+              <AvatarFallback className="bg-emerald-100 text-emerald-700">V</AvatarFallback>
             </Avatar>
             <Avatar className="h-8 w-8 border-2 border-white">
               <AvatarImage src="/placeholder.svg?height=32&width=32" />
-              <AvatarFallback className="bg-blue-100 text-blue-700">J</AvatarFallback>
+              <AvatarFallback className="bg-blue-100 text-blue-700">S</AvatarFallback>
             </Avatar>
           </div>
         </div>
       </div>
 
       {/* Today's Overview */}
-      <div className="grid grid-cols-2 gap-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         <Card className="bg-gradient-to-br from-emerald-50 to-emerald-100 border-emerald-200">
           <CardContent className="p-4">
             <div className="flex items-center gap-3">
@@ -105,114 +105,149 @@ export default function HouseholdApp() {
             </div>
           </CardContent>
         </Card>
-      </div>
 
-      {/* Quick Actions */}
-      <Card>
-        <CardHeader>
-          <CardTitle className="text-lg">Quick Actions</CardTitle>
-        </CardHeader>
-        <CardContent>
-          <div className="grid grid-cols-2 gap-3">
-            <Button 
-              variant="outline" 
-              className="h-12 justify-start gap-3"
-              onClick={() => handleNavigation("tasks")}
-            >
-              <Plus className="h-4 w-4" />
-              Add Task
-            </Button>
-            <Button 
-              variant="outline" 
-              className="h-12 justify-start gap-3"
-              onClick={() => setShoppingModalOpen(true)}
-            >
-              <ShoppingCart className="h-4 w-4" />
-              Shopping List
-            </Button>
-            <Button 
-              variant="outline" 
-              className="h-12 justify-start gap-3"
-              onClick={() => setFinanceModalOpen(true)}
-            >
-              <DollarSign className="h-4 w-4" />
-              Log Expense
-            </Button>
-            <Button variant="outline" className="h-12 justify-start gap-3">
-              <MessageCircle className="h-4 w-4" />
-              Send Note
-            </Button>
-          </div>
-        </CardContent>
-      </Card>
-
-      {/* Today's Tasks */}
-      <Card>
-        <CardHeader className="flex flex-row items-center justify-between">
-          <CardTitle className="text-lg">Today's Tasks</CardTitle>
-          <Badge variant="secondary">{tasks.filter(t => !t.completed).length} remaining</Badge>
-        </CardHeader>
-        <CardContent className="space-y-3">
-          {tasks.slice(0, 4).map((item) => (
-            <div key={item.id} className="flex items-center gap-3 p-3 bg-slate-50 rounded-lg">
-              <Button variant="ghost" size="sm" className="p-0 h-6 w-6" onClick={() => toggleTaskComplete(item.id)}>
-                <CheckCircle2
-                  className={`h-5 w-5 ${
-                    item.completed ? "text-emerald-500 fill-emerald-500" : "text-slate-400"
-                  }`}
-                />
-              </Button>
-              <div className="flex-1">
-                <p
-                  className={`font-medium ${item.completed ? "line-through text-slate-500" : "text-slate-800"}`}
-                >
-                  {item.task}
-                </p>
-                <div className="flex items-center gap-2 mt-1">
-                  <Badge
-                    variant={
-                      item.priority === "high" ? "destructive" : item.priority === "medium" ? "default" : "secondary"
-                    }
-                    className="text-xs"
-                  >
-                    {item.priority}
-                  </Badge>
-                  <span className="text-xs text-slate-500">{item.assignee}</span>
-                  <span className="text-xs text-slate-500">•</span>
-                  <span className="text-xs text-slate-500">{item.time}</span>
-                </div>
+        <Card className="bg-gradient-to-br from-purple-50 to-purple-100 border-purple-200 sm:col-span-2 lg:col-span-1">
+          <CardContent className="p-4">
+            <div className="flex items-center gap-3">
+              <div className="p-2 bg-purple-500 rounded-lg">
+                <ShoppingCart className="h-5 w-5 text-white" />
+              </div>
+              <div>
+                <p className="text-sm text-purple-700">Shopping</p>
+                <p className="text-2xl font-bold text-purple-800">12 items</p>
               </div>
             </div>
-          ))}
-        </CardContent>
-      </Card>
+          </CardContent>
+        </Card>
+
+        <Card className="bg-gradient-to-br from-orange-50 to-orange-100 border-orange-200 sm:col-span-2 lg:col-span-1">
+          <CardContent className="p-4">
+            <div className="flex items-center gap-3">
+              <div className="p-2 bg-orange-500 rounded-lg">
+                <MapPin className="h-5 w-5 text-white" />
+              </div>
+              <div>
+                <p className="text-sm text-orange-700">Next Trip</p>
+                <p className="text-2xl font-bold text-orange-800">Dec 15</p>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+      </div>
+
+      {/* Main Content Grid */}
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        {/* Quick Actions */}
+        <Card className="lg:col-span-1">
+          <CardHeader>
+            <CardTitle className="text-lg">Quick Actions</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="grid grid-cols-1 gap-3">
+              <Button 
+                variant="outline" 
+                className="h-12 justify-start gap-3"
+                onClick={() => handleNavigation("tasks")}
+              >
+                <Plus className="h-4 w-4" />
+                Add Task
+              </Button>
+              <Button 
+                variant="outline" 
+                className="h-12 justify-start gap-3"
+                onClick={() => setShoppingModalOpen(true)}
+              >
+                <ShoppingCart className="h-4 w-4" />
+                Shopping List
+              </Button>
+              <Button 
+                variant="outline" 
+                className="h-12 justify-start gap-3"
+                onClick={() => setFinanceModalOpen(true)}
+              >
+                <DollarSign className="h-4 w-4" />
+                Log Expense
+              </Button>
+              <Button variant="outline" className="h-12 justify-start gap-3">
+                <MessageCircle className="h-4 w-4" />
+                Send Note
+              </Button>
+            </div>
+          </CardContent>
+        </Card>
+
+        {/* Today's Tasks */}
+        <Card className="lg:col-span-2">
+          <CardHeader className="flex flex-row items-center justify-between">
+            <CardTitle className="text-lg">Today's Tasks</CardTitle>
+            <Badge variant="secondary">{tasks.filter(t => !t.completed).length} remaining</Badge>
+          </CardHeader>
+          <CardContent className="space-y-3">
+            <div className="grid grid-cols-1 xl:grid-cols-2 gap-3">
+              {tasks.slice(0, 6).map((item) => (
+                <div key={item.id} className="flex items-center gap-3 p-3 bg-slate-50 rounded-lg">
+                  <Button variant="ghost" size="sm" className="p-0 h-6 w-6" onClick={() => toggleTaskComplete(item.id)}>
+                    <CheckCircle2
+                      className={`h-5 w-5 ${
+                        item.completed ? "text-emerald-500 fill-emerald-500" : "text-slate-400"
+                      }`}
+                    />
+                  </Button>
+                  <div className="flex-1 min-w-0">
+                    <p
+                      className={`font-medium text-sm ${item.completed ? "line-through text-slate-500" : "text-slate-800"} truncate`}
+                    >
+                      {item.task}
+                    </p>
+                    <div className="flex items-center gap-2 mt-1">
+                      <Badge
+                        variant={
+                          item.priority === "high" ? "destructive" : item.priority === "medium" ? "default" : "secondary"
+                        }
+                        className="text-xs"
+                      >
+                        {item.priority}
+                      </Badge>
+                      <span className="text-xs text-slate-500 truncate">{item.assignee}</span>
+                      <span className="text-xs text-slate-500">•</span>
+                      <span className="text-xs text-slate-500">{item.time}</span>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </CardContent>
+        </Card>
+      </div>
 
       {/* Recent Activity */}
       <Card>
         <CardHeader>
           <CardTitle className="text-lg">Recent Activity</CardTitle>
         </CardHeader>
-        <CardContent className="space-y-3">
-          <div className="flex items-center gap-3">
-            <Avatar className="h-8 w-8">
-              <AvatarFallback className="bg-emerald-100 text-emerald-700">J</AvatarFallback>
-            </Avatar>
-            <div className="flex-1">
-              <p className="text-sm">
-                Jordan completed <span className="font-medium">Weekly grocery shopping</span>
-              </p>
-              <p className="text-xs text-slate-500">2 hours ago</p>
+        <CardContent>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div className="flex items-center gap-3">
+              <Avatar className="h-8 w-8">
+                <AvatarFallback className="bg-emerald-100 text-emerald-700">S</AvatarFallback>
+              </Avatar>
+              <div className="flex-1">
+                <p className="text-sm">
+                  Shruthi completed <span className="font-medium">Weekly grocery shopping</span>
+                </p>
+                <p className="text-xs text-slate-500">2 hours ago</p>
+              </div>
             </div>
-          </div>
-          <div className="flex items-center gap-3">
-            <Avatar className="h-8 w-8">
-              <AvatarFallback className="bg-blue-100 text-blue-700">A</AvatarFallback>
-            </Avatar>
-            <div className="flex-1">
-              <p className="text-sm">
-                Alex added <span className="font-medium">$45.60</span> to shared expenses
-              </p>
-              <p className="text-xs text-slate-500">4 hours ago</p>
+            <div className="flex items-center gap-3">
+              <Avatar className="h-8 w-8">
+                <AvatarFallback className="bg-blue-100 text-blue-700">V</AvatarFallback>
+              </Avatar>
+              <div className="flex-1">
+                <p className="text-sm">
+                  Vishwa added <span className="font-medium">$45.60</span> to shared expenses
+                </p>
+                <p className="text-xs text-slate-500">4 hours ago</p>
+              </div>
             </div>
           </div>
         </CardContent>
@@ -832,33 +867,37 @@ export default function HouseholdApp() {
   }
 
   return (
-    <div className="max-w-md mx-auto bg-white min-h-screen flex flex-col">
+    <div className="w-full mx-auto bg-white min-h-screen flex flex-col">
       {/* Main Content */}
-      <div className="flex-1 p-4 pb-20 overflow-y-auto">{renderCurrentScreen()}</div>
+      <div className="flex-1 p-4 pb-20 overflow-y-auto max-w-7xl mx-auto w-full">
+        {renderCurrentScreen()}
+      </div>
 
       {/* Bottom Navigation */}
-      <div className="fixed bottom-0 left-1/2 transform -translate-x-1/2 w-full max-w-md bg-white border-t border-slate-200">
-        <div className="flex items-center justify-around py-2">
-          {[
-            { id: "dashboard", icon: Home, label: "Home" },
-            { id: "tasks", icon: ListTodo, label: "Tasks" },
-            { id: "shopping", icon: ShoppingCart, label: "Shopping" },
-            { id: "finance", icon: Wallet, label: "Finance" },
-            { id: "travel", icon: Plane, label: "Travel" },
-          ].map((tab) => (
-            <Button
-              key={tab.id}
-              variant="ghost"
-              size="sm"
-              className={`flex flex-col items-center gap-1 h-auto py-2 px-3 ${
-                currentScreen === tab.id ? "text-emerald-600 bg-emerald-50" : "text-slate-600"
-              }`}
-              onClick={() => handleNavigation(tab.id as Screen)}
-            >
-              <tab.icon className="h-5 w-5" />
-              <span className="text-xs">{tab.label}</span>
-            </Button>
-          ))}
+      <div className="fixed bottom-0 left-0 right-0 bg-white border-t border-slate-200">
+        <div className="max-w-7xl mx-auto px-4">
+          <div className="flex items-center justify-around py-2">
+            {[
+              { id: "dashboard", icon: Home, label: "Home" },
+              { id: "tasks", icon: ListTodo, label: "Tasks" },
+              { id: "shopping", icon: ShoppingCart, label: "Shopping" },
+              { id: "finance", icon: Wallet, label: "Finance" },
+              { id: "travel", icon: Plane, label: "Travel" },
+            ].map((tab) => (
+              <Button
+                key={tab.id}
+                variant="ghost"
+                size="sm"
+                className={`flex flex-col items-center gap-1 h-auto py-2 px-3 ${
+                  currentScreen === tab.id ? "text-emerald-600 bg-emerald-50" : "text-slate-600"
+                }`}
+                onClick={() => handleNavigation(tab.id as Screen)}
+              >
+                <tab.icon className="h-5 w-5" />
+                <span className="text-xs">{tab.label}</span>
+              </Button>
+            ))}
+          </div>
         </div>
       </div>
 

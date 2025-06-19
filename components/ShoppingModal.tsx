@@ -79,12 +79,9 @@ export function ShoppingModal({ open, onOpenChange }: ShoppingModalProps) {
                 <SelectValue placeholder="Select category" />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="Dairy">Dairy</SelectItem>
-                <SelectItem value="Bakery">Bakery</SelectItem>
-                <SelectItem value="Produce">Produce</SelectItem>
-                <SelectItem value="Personal">Personal</SelectItem>
-                <SelectItem value="Cleaning">Cleaning</SelectItem>
-                <SelectItem value="Other">Other</SelectItem>
+                <SelectItem value="Groceries & Fresh">Groceries & Fresh</SelectItem>
+                <SelectItem value="Household Essentials">Household Essentials</SelectItem>
+                <SelectItem value="Long-term Purchases">Long-term Purchases</SelectItem>
               </SelectContent>
             </Select>
           </div>
