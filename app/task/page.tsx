@@ -141,6 +141,19 @@ function TaskOverlay({ task }: { task: any }) {
   )
 }
 
+function DroppableArea({ columnId }: { columnId: string }) {
+  const { setNodeRef } = useSortable({ id: columnId })
+  
+  return (
+    <div 
+      ref={setNodeRef}
+      className="text-slate-400 text-sm text-center py-8 border-2 border-dashed border-slate-200 rounded-lg hover:border-blue-300 hover:bg-blue-50 transition-colors"
+    >
+      Drop tasks here
+    </div>
+  )
+}
+
 export default function TaskPage() {
   const { tasks, toggleTaskComplete, updateTask } = useTasks()
   const [modalOpen, setModalOpen] = useState(false)
@@ -196,37 +209,67 @@ export default function TaskPage() {
     const { active, over } = event
     setActiveTask(null)
     if (!over) return
+
     const activeId = active.id as string
     const overId = over.id as string
-    // Find source and destination columns
+
+    // Find source column
     let sourceCol = null
-    let destCol = null
     for (const col in columnTasks) {
-      if (columnTasks[col].includes(activeId)) sourceCol = col
-      if (col === overId || columnTasks[col].includes(overId)) destCol = col
+      if (columnTasks[col].includes(activeId)) {
+        sourceCol = col
+        break
+      }
     }
-    if (!sourceCol || !destCol) return
-    // If dropped in same column, reorder
+
+    if (!sourceCol) return
+
+    // Find destination column
+    let destCol = null
+    let insertIndex = 0
+
+    // Check if we're dropping directly on a column (empty area)
+    if (columnIds.includes(overId)) {
+      destCol = overId
+      insertIndex = columnTasks[destCol]?.length || 0
+    } else {
+      // We're dropping on a task, find which column it belongs to
+      for (const col in columnTasks) {
+        if (columnTasks[col].includes(overId)) {
+          destCol = col
+          insertIndex = columnTasks[col].indexOf(overId)
+          break
+        }
+      }
+    }
+
+    if (!destCol) return
+
+    // If dropping in the same column, reorder
     if (sourceCol === destCol) {
       const oldIndex = columnTasks[sourceCol].indexOf(activeId)
-      let newIndex = columnTasks[destCol].indexOf(overId)
-      if (oldIndex === newIndex) return
-      if (newIndex === -1) newIndex = columnTasks[destCol].length - 1
-      const newItems = arrayMove(columnTasks[sourceCol], oldIndex, newIndex)
+      if (oldIndex === insertIndex) return
+      
+      const newItems = arrayMove(columnTasks[sourceCol], oldIndex, insertIndex)
       setColumnTasks({ ...columnTasks, [sourceCol]: newItems })
     } else {
       // Move to another column
       const newSource = columnTasks[sourceCol].filter(id => id !== activeId)
-      let destIndex = columnTasks[destCol].indexOf(overId)
-      if (destIndex === -1) destIndex = columnTasks[destCol].length
       const newDest = [...columnTasks[destCol]]
-      newDest.splice(destIndex, 0, activeId)
-      setColumnTasks({ ...columnTasks, [sourceCol]: newSource, [destCol]: newDest })
+      newDest.splice(insertIndex, 0, activeId)
+      
+      setColumnTasks({ 
+        ...columnTasks, 
+        [sourceCol]: newSource, 
+        [destCol]: newDest 
+      })
+
       // Update dueDate in backend
       try {
         await updateTask(activeId, { dueDate: destCol })
-      } catch (e) {
-        // revert UI if error
+      } catch (error) {
+        console.error("Error updating task date:", error)
+        // Revert on error
         setColumnTasks({ ...columnTasks })
       }
     }
@@ -275,11 +318,9 @@ export default function TaskPage() {
                         </Button>
                       </CardHeader>
                       <CardContent className="space-y-3 pt-2">
-                        <SortableContext id={key} items={taskIds} strategy={verticalListSortingStrategy}>
+                        <SortableContext id={key} items={[...taskIds, key]} strategy={verticalListSortingStrategy}>
                           {dayTasks.length === 0 && (
-                            <div className="text-slate-400 text-sm text-center py-8 border-2 border-dashed border-slate-200 rounded-lg">
-                              Drop tasks here
-                            </div>
+                            <DroppableArea columnId={key} />
                           )}
                           {dayTasks.map((task: any) => (
                             <DraggableTask
