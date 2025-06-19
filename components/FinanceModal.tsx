@@ -22,7 +22,7 @@ import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover
 import { CalendarIcon } from "lucide-react"
 import { format } from "date-fns"
 import { cn } from "@/lib/utils"
-import { useFinance } from "@/app/hooks/useFinance"
+import { useFinance, type ExpenseCategory, type PersonType } from "@/app/hooks/useFinance"
 
 interface FinanceModalProps {
   open: boolean
@@ -34,8 +34,8 @@ export function FinanceModal({ open, onOpenChange }: FinanceModalProps) {
   const [formData, setFormData] = useState({
     description: "",
     amount: 0,
-    category: "",
-    person: "Vishwa",
+    category: "Groceries" as ExpenseCategory,
+    person: "Vishwa" as PersonType,
     date: new Date().toISOString(),
     type: "expense" as const,
   })
@@ -48,8 +48,8 @@ export function FinanceModal({ open, onOpenChange }: FinanceModalProps) {
       setFormData({
         description: "",
         amount: 0,
-        category: "",
-        person: "Vishwa",
+        category: "Groceries" as ExpenseCategory,
+        person: "Vishwa" as PersonType,
         date: new Date().toISOString(),
         type: "expense",
       })
@@ -90,7 +90,7 @@ export function FinanceModal({ open, onOpenChange }: FinanceModalProps) {
             <Label htmlFor="category">Category</Label>
             <Select
               value={formData.category}
-              onValueChange={(value) => setFormData({ ...formData, category: value })}
+              onValueChange={(value: ExpenseCategory) => setFormData({ ...formData, category: value })}
             >
               <SelectTrigger>
                 <SelectValue placeholder="Select category" />
@@ -111,7 +111,7 @@ export function FinanceModal({ open, onOpenChange }: FinanceModalProps) {
             <Label htmlFor="person">Paid By</Label>
             <Select
               value={formData.person}
-              onValueChange={(value) => setFormData({ ...formData, person: value })}
+              onValueChange={(value: PersonType) => setFormData({ ...formData, person: value })}
             >
               <SelectTrigger>
                 <SelectValue placeholder="Select person" />
