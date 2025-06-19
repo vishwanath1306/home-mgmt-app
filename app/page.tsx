@@ -23,6 +23,7 @@ import {
   Star,
   Users,
   AlertCircle,
+  Utensils,
 } from "lucide-react"
 import { useRouter } from "next/navigation"
 import { useTasks } from "./hooks/useTasks"
@@ -30,7 +31,7 @@ import { useShopping } from "./hooks/useShopping"
 import { ShoppingModal } from "@/components/ShoppingModal"
 import { FinanceModal } from "@/components/FinanceModal"
 
-type Screen = "dashboard" | "tasks" | "shopping" | "finance" | "travel" | "settings"
+type Screen = "dashboard" | "tasks" | "shopping" | "meals" | "finance" | "travel" | "settings"
 
 export default function HouseholdApp() {
   const [currentScreen, setCurrentScreen] = useState<Screen>("dashboard")
@@ -44,6 +45,8 @@ export default function HouseholdApp() {
       router.push("/task")
     } else if (screen === "shopping") {
       router.push("/shopping")
+    } else if (screen === "meals") {
+      router.push("/meals")
     } else if (screen === "finance") {
       router.push("/finance")
     } else {
@@ -77,58 +80,72 @@ export default function HouseholdApp() {
       </div>
 
       {/* Today's Overview */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3">
         <Card className="bg-gradient-to-br from-emerald-50 to-emerald-100 border-emerald-200">
-          <CardContent className="p-4">
-            <div className="flex items-center gap-3">
-              <div className="p-2 bg-emerald-500 rounded-lg">
-                <CheckCircle2 className="h-5 w-5 text-white" />
+          <CardContent className="p-3">
+            <div className="flex items-center gap-2">
+              <div className="p-1.5 bg-emerald-500 rounded-md">
+                <CheckCircle2 className="h-4 w-4 text-white" />
               </div>
-              <div>
-                <p className="text-sm text-emerald-700">Tasks Done</p>
-                <p className="text-2xl font-bold text-emerald-800">3/7</p>
+              <div className="min-w-0 flex-1">
+                <p className="text-xs text-emerald-700">Tasks Done</p>
+                <p className="text-lg font-bold text-emerald-800">3/7</p>
               </div>
             </div>
           </CardContent>
         </Card>
 
         <Card className="bg-gradient-to-br from-blue-50 to-blue-100 border-blue-200">
-          <CardContent className="p-4">
-            <div className="flex items-center gap-3">
-              <div className="p-2 bg-blue-500 rounded-lg">
-                <DollarSign className="h-5 w-5 text-white" />
+          <CardContent className="p-3">
+            <div className="flex items-center gap-2">
+              <div className="p-1.5 bg-blue-500 rounded-md">
+                <DollarSign className="h-4 w-4 text-white" />
               </div>
-              <div>
-                <p className="text-sm text-blue-700">This Month</p>
-                <p className="text-2xl font-bold text-blue-800">$1,240</p>
-              </div>
-            </div>
-          </CardContent>
-        </Card>
-
-        <Card className="bg-gradient-to-br from-purple-50 to-purple-100 border-purple-200 sm:col-span-2 lg:col-span-1">
-          <CardContent className="p-4">
-            <div className="flex items-center gap-3">
-              <div className="p-2 bg-purple-500 rounded-lg">
-                <ShoppingCart className="h-5 w-5 text-white" />
-              </div>
-              <div>
-                <p className="text-sm text-purple-700">Shopping</p>
-                <p className="text-2xl font-bold text-purple-800">12 items</p>
+              <div className="min-w-0 flex-1">
+                <p className="text-xs text-blue-700">This Month</p>
+                <p className="text-lg font-bold text-blue-800">$1,240</p>
               </div>
             </div>
           </CardContent>
         </Card>
 
-        <Card className="bg-gradient-to-br from-orange-50 to-orange-100 border-orange-200 sm:col-span-2 lg:col-span-1">
-          <CardContent className="p-4">
-            <div className="flex items-center gap-3">
-              <div className="p-2 bg-orange-500 rounded-lg">
-                <MapPin className="h-5 w-5 text-white" />
+        <Card className="bg-gradient-to-br from-purple-50 to-purple-100 border-purple-200">
+          <CardContent className="p-3">
+            <div className="flex items-center gap-2">
+              <div className="p-1.5 bg-purple-500 rounded-md">
+                <ShoppingCart className="h-4 w-4 text-white" />
               </div>
-              <div>
-                <p className="text-sm text-orange-700">Next Trip</p>
-                <p className="text-2xl font-bold text-orange-800">Dec 15</p>
+              <div className="min-w-0 flex-1">
+                <p className="text-xs text-purple-700">Shopping</p>
+                <p className="text-lg font-bold text-purple-800">12 items</p>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+
+        <Card className="bg-gradient-to-br from-green-50 to-green-100 border-green-200">
+          <CardContent className="p-3">
+            <div className="flex items-center gap-2">
+              <div className="p-1.5 bg-green-500 rounded-md">
+                <Utensils className="h-4 w-4 text-white" />
+              </div>
+              <div className="min-w-0 flex-1">
+                <p className="text-xs text-green-700">Today's Meals</p>
+                <p className="text-lg font-bold text-green-800">3 planned</p>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+
+        <Card className="bg-gradient-to-br from-orange-50 to-orange-100 border-orange-200">
+          <CardContent className="p-3">
+            <div className="flex items-center gap-2">
+              <div className="p-1.5 bg-orange-500 rounded-md">
+                <MapPin className="h-4 w-4 text-white" />
+              </div>
+              <div className="min-w-0 flex-1">
+                <p className="text-xs text-orange-700">Next Trip</p>
+                <p className="text-lg font-bold text-orange-800">Dec 15</p>
               </div>
             </div>
           </CardContent>
@@ -159,6 +176,14 @@ export default function HouseholdApp() {
               >
                 <ShoppingCart className="h-4 w-4" />
                 Shopping List
+              </Button>
+              <Button 
+                variant="outline" 
+                className="h-12 justify-start gap-3"
+                onClick={() => handleNavigation("meals")}
+              >
+                <Utensils className="h-4 w-4" />
+                Plan Meals
               </Button>
               <Button 
                 variant="outline" 
@@ -881,6 +906,7 @@ export default function HouseholdApp() {
               { id: "dashboard", icon: Home, label: "Home" },
               { id: "tasks", icon: ListTodo, label: "Tasks" },
               { id: "shopping", icon: ShoppingCart, label: "Shopping" },
+              { id: "meals", icon: Utensils, label: "Meals" },
               { id: "finance", icon: Wallet, label: "Finance" },
               { id: "travel", icon: Plane, label: "Travel" },
             ].map((tab) => (
