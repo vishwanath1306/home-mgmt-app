@@ -1,13 +1,31 @@
 {
-  "name": "my-v0-project",
-  "version": "0.1.0",
+  "name": "home-mgmt-app",
+  "version": "1.0.0",
+  "description": "A comprehensive home management application for couples to organize tasks, meals, shopping, finances, and travel together.",
   "private": true,
   "scripts": {
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "type-check": "tsc --noEmit"
   },
+  "keywords": [
+    "home management",
+    "couples app",
+    "task management",
+    "meal planning",
+    "budget tracking",
+    "shopping list",
+    "travel planning",
+    "nextjs",
+    "react",
+    "typescript"
+  ],
+  "authors": [
+    "Vishwa",
+    "Shruthi"
+  ],
   "dependencies": {
     "@dnd-kit/core": "^6.3.1",
     "@dnd-kit/sortable": "^10.0.0",

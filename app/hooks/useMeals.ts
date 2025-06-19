@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react"
 
+// Type definitions for meal planning system
 export type MealType = "breakfast" | "lunch" | "dinner" | "snack"
 export type MealStatus = "planned" | "prepped" | "completed"
 export type WaterUnit = "cups" | "oz" | "ml" | "l"
@@ -55,7 +56,18 @@ export type SavedMeal = {
   timesUsed: number
 }
 
+/**
+ * Custom hook for managing meals, nutrition goals, and water intake
+ * 
+ * Provides comprehensive meal planning functionality including:
+ * - CRUD operations for meals
+ * - Nutrition goal management
+ * - Water intake tracking
+ * - Saved meal templates
+ * - State management with loading and error handling
+ */
 export function useMeals() {
+  // State management
   const [meals, setMeals] = useState<Meal[]>([])
   const [nutritionGoals, setNutritionGoals] = useState<Record<string, NutritionGoals>>({})
   const [waterIntake, setWaterIntake] = useState<WaterIntake[]>([])
@@ -63,6 +75,9 @@ export function useMeals() {
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
 
+  /**
+   * Fetch meals for a specific date or all meals
+   */
   const fetchMeals = async (date?: string) => {
     try {
       const url = date ? `/api/meals?date=${date}` : "/api/meals"
@@ -77,6 +92,9 @@ export function useMeals() {
     }
   }
 
+  /**
+   * Fetch nutrition goals for a specific user
+   */
   const fetchNutritionGoals = async (userId: string) => {
     try {
       const response = await fetch(`/api/meals?type=nutrition-goals&userId=${userId}`)
@@ -90,6 +108,9 @@ export function useMeals() {
     }
   }
 
+  /**
+   * Fetch water intake records for a specific user and date
+   */
   const fetchWaterIntake = async (userId: string, date: string) => {
     try {
       const response = await fetch(`/api/meals?type=water-intake&userId=${userId}&date=${date}`)
@@ -101,6 +122,9 @@ export function useMeals() {
     }
   }
 
+  /**
+   * Fetch saved meal templates for a specific user
+   */
   const fetchSavedMeals = async (userId: string) => {
     try {
       const response = await fetch(`/api/meals?type=saved-meals&userId=${userId}`)
@@ -112,6 +136,11 @@ export function useMeals() {
     }
   }
 
+  // Meal CRUD Operations
+  
+  /**
+   * Add a new meal to the plan
+   */
   const addMeal = async (meal: Omit<Meal, "id" | "status">) => {
     try {
       const response = await fetch("/api/meals", {
@@ -129,6 +158,9 @@ export function useMeals() {
     }
   }
 
+  /**
+   * Update an existing meal
+   */
   const updateMeal = async (id: string, updates: Partial<Meal>) => {
     try {
       const response = await fetch("/api/meals", {
@@ -146,6 +178,9 @@ export function useMeals() {
     }
   }
 
+  /**
+   * Delete a meal from the plan
+   */
   const deleteMeal = async (id: string) => {
     try {
       const response = await fetch(`/api/meals?id=${id}`, {
@@ -159,6 +194,22 @@ export function useMeals() {
     }
   }
 
+  /**
+   * Toggle meal completion status
+   */
+  const toggleMealComplete = async (id: string) => {
+    const meal = meals.find((m) => m.id === id)
+    if (meal) {
+      const newStatus = meal.status === "completed" ? "planned" : "completed"
+      await updateMeal(id, { status: newStatus })
+    }
+  }
+
+  // Nutrition Goals Management
+
+  /**
+   * Update nutrition goals for a user
+   */
   const updateNutritionGoals = async (goals: NutritionGoals) => {
     try {
       const response = await fetch("/api/meals", {
@@ -176,6 +227,11 @@ export function useMeals() {
     }
   }
 
+  // Water Intake Management
+
+  /**
+   * Add water intake record
+   */
   const addWaterIntake = async (intake: Omit<WaterIntake, "id" | "timestamp">) => {
     try {
       const response = await fetch("/api/meals", {
@@ -193,6 +249,11 @@ export function useMeals() {
     }
   }
 
+  // Saved Meals Management
+
+  /**
+   * Save a meal as a template for future use
+   */
   const saveMeal = async (meal: Omit<SavedMeal, "id" | "timesUsed">) => {
     try {
       const response = await fetch("/api/meals", {
@@ -201,52 +262,77 @@ export function useMeals() {
         body: JSON.stringify({ type: "saved-meal", ...meal }),
       })
       if (!response.ok) throw new Error("Failed to save meal")
-      const newSavedMeal = await response.json()
-      setSavedMeals((prev) => [...prev, newSavedMeal])
-      return newSavedMeal
+      const savedMeal = await response.json()
+      setSavedMeals((prev) => [...prev, savedMeal])
+      return savedMeal
     } catch (err) {
       setError(err instanceof Error ? err.message : "An error occurred")
       throw err
     }
   }
 
-  const toggleMealComplete = async (id: string) => {
-    const meal = meals.find((m) => m.id === id)
-    if (meal) {
-      const newStatus = meal.status === "completed" ? "planned" : "completed"
-      await updateMeal(id, { status: newStatus })
+  /**
+   * Use a saved meal template (increments usage count)
+   */
+  const useSavedMeal = async (savedMealId: string) => {
+    try {
+      const response = await fetch("/api/meals", {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ type: "use-saved-meal", id: savedMealId }),
+      })
+      if (!response.ok) throw new Error("Failed to use saved meal")
+      const updatedMeal = await response.json()
+      setSavedMeals((prev) => 
+        prev.map((meal) => (meal.id === savedMealId ? updatedMeal : meal))
+      )
+      return updatedMeal
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "An error occurred")
+      throw err
     }
   }
 
+  // Initialize data on mount
   useEffect(() => {
     fetchMeals()
+    // Fetch nutrition goals for both users
     fetchNutritionGoals("Vishwa")
     fetchNutritionGoals("Shruthi")
-    fetchSavedMeals("Vishwa")
-    fetchSavedMeals("Shruthi")
-    
+    // Fetch today's water intake for both users
     const today = new Date().toISOString().split('T')[0]
     fetchWaterIntake("Vishwa", today)
     fetchWaterIntake("Shruthi", today)
   }, [])
 
   return {
+    // State
     meals,
     nutritionGoals,
     waterIntake,
     savedMeals,
     loading,
     error,
+    
+    // Meal operations
     addMeal,
     updateMeal,
     deleteMeal,
-    updateNutritionGoals,
-    addWaterIntake,
-    saveMeal,
     toggleMealComplete,
-    fetchMeals,
+    
+    // Nutrition goals
+    updateNutritionGoals,
+    
+    // Water intake
+    addWaterIntake,
+    
+    // Saved meals
+    saveMeal,
+    useSavedMeal,
+    
+    // Utility functions
+    refetchMeals: fetchMeals,
     fetchNutritionGoals,
     fetchWaterIntake,
-    fetchSavedMeals,
   }
 }
